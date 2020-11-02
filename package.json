@@ -20,6 +20,7 @@
   "homepage": "https://github.com/spike0161/whatsapp-backend#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.10.6"
+    "mongoose": "^5.10.6",
+    "pusher": "^4.0.0"
   }
 }
