@@ -36,7 +36,6 @@ db.once("open", () => {
   const changeStream = msgCollection.watch();
 
   changeStream.on("change", (change) => {
-    console.log(change);
 
     if (change.operationType === "insert") {
       const messageDetails = change.fullDocuments;
@@ -68,9 +67,9 @@ app.post("/messages/new", (req, res) => {
 
   Messages.create(dbMessage, (err, data) => {
     if (err) {
-      res.sendStatus(500).send(err);
+      res.status(500).send(err);
     } else {
-      res.sendStaus(200).send(data);
+      res.status(201).send(data);
     }
   });
 });
