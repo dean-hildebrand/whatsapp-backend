@@ -7,7 +7,7 @@ import cors from 'cors';
 
 // app config
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 9000;
 
 const pusher = new Pusher({
   appId: "1100621",
@@ -32,18 +32,24 @@ mongoose.connect(connection_url, {
 });
 
 const db = mongoose.connection;
+
 // does this once the db is connected to "watch" for for changes
 db.once("open", () => {
+  console.log("DB connected");
+
   const msgCollection = db.collection("messagecontents");
   const changeStream = msgCollection.watch();
 
   changeStream.on("change", (change) => {
 
     if (change.operationType === "insert") {
-      const messageDetails = change.fullDocuments;
-      pusher.trigger("messages", "inserted", {
+      const messageDetails = change.fullDocument;
+      pusher.trigger("messages", "inserted",
+      {
         name: messageDetails.name,
         message: messageDetails.message,
+        timestamp: messageDetails.timestamp,
+        received: messageDetails.recevied,
       });
     } else {
       console.log("Error triggering Pusher");
@@ -57,9 +63,9 @@ app.get("/", (req, res) => res.status(200).send("Hello World"));
 app.get("/messages/sync", (req, res) => {
   Messages.find((err, data) => {
     if (err) {
-      res.send(500).send(err);
+      res.status(500).send(err);
     } else {
-      res.send(200).send(data);
+      res.status(200).send(data);
     }
   });
 });
