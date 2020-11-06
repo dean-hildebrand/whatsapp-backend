@@ -6,8 +6,13 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "start": "node server.js",
+        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
   },
+  "engines": {
+        "node": "10.16.0",
+      },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spike0161/whatsapp-backend.git"
